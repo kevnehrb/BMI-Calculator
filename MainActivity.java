@@ -1,9 +1,13 @@
+/*
+Kevin Nehrbauer and Chris Woolley
+ */
 package com.example.prog5;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +28,20 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button)findViewById(R.id.calculateBMIbutton);
         rbImperial = findViewById(R.id.imperialRadioButton);
         rbMetric = findViewById(R.id.metricRadioButton);
+        Button secondActivityBtn = (Button)findViewById(R.id.advicebutton);
+        secondActivityBtn.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                Intent startIntent = new Intent(getApplicationContext(), Main2Activity.class);
+                //pass info
+                startActivity(startIntent);
+            }
+        });
+
+    }
+
+    public void adviceClick(View view){
 
     }
 
