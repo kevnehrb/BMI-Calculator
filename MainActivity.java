@@ -1,6 +1,3 @@
-/*
-Kevin Nehrbauer and Chris Woolley
- */
 package com.example.prog5;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton rbImperial, rbMetric;
     Button btn;
     EditText w, h;
+    boolean english;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(startIntent);
             }
         });
-
-    }
-
-    public void adviceClick(View view){
-
     }
 
     public void rbClicked(View view){
@@ -78,20 +72,34 @@ public class MainActivity extends AppCompatActivity {
             boolean n_weight = true;
             boolean n_height = true;
             try {
-                Integer num1 = Integer.parseInt(weight);
+                Double num1 = Double.parseDouble(weight);
             } catch (NumberFormatException e) {
                 n_weight = false;
             }
+
             try {
-                Integer num2 = Integer.parseInt(height);
+                Double num2 = Double.parseDouble(height);
             } catch (NumberFormatException e) {
                 n_height = false;
             }
 
             if(n_weight && n_height){
-                bmi calc = new bmi(Integer.parseInt(weight), Integer.parseInt(height), true);
-                String calcNum = calc.bmiCalculator();
-                Toast.makeText(getApplicationContext(), calcNum, Toast.LENGTH_LONG).show();
+                if(rbMetric.isChecked()) {
+                    english = false;
+                    bmi calc = new bmi(Double.parseDouble(weight), Double.parseDouble(height), english);
+                    String calcNum = calc.bmiCalculator();
+                    TextView t = (TextView) findViewById(R.id.result);
+                    t.setText(calcNum);
+                }
+                else if(rbImperial.isChecked()){
+                    english = true;
+                    bmi calc = new bmi(Double.parseDouble(weight), Double.parseDouble(height), english);
+                    String calcNum = calc.bmiCalculator();
+                    TextView t = (TextView) findViewById(R.id.result);
+                    t.setText(calcNum);
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "You must select either Imperial or Metric", Toast.LENGTH_LONG).show();
             }
             else{
                 if(n_weight)
