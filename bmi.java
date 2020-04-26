@@ -3,11 +3,11 @@ package com.example.prog5;
 import java.text.DecimalFormat;
 
 public class bmi{
-    private int weight, height;
+    private double weight, height;
     private boolean english;
     private static DecimalFormat df = new DecimalFormat("0.00");
 
-    public bmi(int weight, int height, boolean english){
+    public bmi(double weight, double height, boolean english){
         this.weight = weight;
         this.height = height;
         this.english = english;
@@ -15,13 +15,11 @@ public class bmi{
 
     public String bmiCalculator(){
         double retValue = 0.00;
-        final double engConst = 703;
-        Double calcWeight = new Double(weight);
-        Double calcHeight = new Double(height);
+        final double engConst = 703.0;
         if(english)
-            retValue = ((calcWeight*engConst)/(calcHeight*calcHeight));
+            retValue = ((weight*engConst)/(height*height));
         else
-            retValue = ((calcWeight)/(calcHeight*calcHeight));
+            retValue = ((weight)/(height*height));
 
         return df.format(retValue);
     }
