@@ -14,11 +14,14 @@ public class bmi{
     }
 
     public String bmiCalculator(){
-        double retValue = 0;
+        double retValue = 0.00;
+        final double engConst = 703;
+        Double calcWeight = new Double(weight);
+        Double calcHeight = new Double(height);
         if(english)
-            retValue = (weight*703)/(height*height);
+            retValue = ((calcWeight*engConst)/(calcHeight*calcHeight));
         else
-            retValue = weight/(height*height);
+            retValue = ((calcWeight)/(calcHeight*calcHeight));
 
         return df.format(retValue);
     }
