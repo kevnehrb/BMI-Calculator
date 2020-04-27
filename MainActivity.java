@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     Button btn;
     EditText w, h;
     boolean english;
+    boolean adviceViable = false;
+    String calcNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +35,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent startIntent = new Intent(getApplicationContext(), Main2Activity.class);
-                //pass info
-                startActivity(startIntent);
+
+                if(adviceViable){
+                    Intent startIntent = new Intent(getApplicationContext(), Main2Activity.class);
+                    startIntent.putExtra("value", calcNum);
+                    startActivity(startIntent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "You must first calculate your BMI before getting advice.", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    private void closeKeyBoard(){
+        View view = this.getCurrentFocus();
+        if (view != null){
+            InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public void rbClicked(View view){
@@ -59,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+        closeKeyBoard();
     }
 
     public void bmiClick(View view) {
@@ -87,16 +104,18 @@ public class MainActivity extends AppCompatActivity {
                 if(rbMetric.isChecked()) {
                     english = false;
                     bmi calc = new bmi(Double.parseDouble(weight), Double.parseDouble(height), english);
-                    String calcNum = calc.bmiCalculator();
+                    calcNum = calc.bmiCalculator();
                     TextView t = (TextView) findViewById(R.id.result);
                     t.setText(calcNum);
+                    adviceViable = true;
                 }
                 else if(rbImperial.isChecked()){
                     english = true;
                     bmi calc = new bmi(Double.parseDouble(weight), Double.parseDouble(height), english);
-                    String calcNum = calc.bmiCalculator();
+                    calcNum = calc.bmiCalculator();
                     TextView t = (TextView) findViewById(R.id.result);
                     t.setText(calcNum);
+                    adviceViable = true;
                 }
                 else
                     Toast.makeText(getApplicationContext(), "You must select either Imperial or Metric", Toast.LENGTH_LONG).show();
@@ -107,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                     Toast.makeText(getApplicationContext(), "Weight must be a numeric value!", Toast.LENGTH_LONG).show();
             }
+            closeKeyBoard();
         }
     }
 }
